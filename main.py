@@ -53,27 +53,12 @@ coeficiente = [
   -7.812,
 ]
 
-alpha = 0.1;
+alpha = 0.4;
 
-# print(J(coeficiente))
-print(derivada_raw(coeficiente, 1))
-print(derivada(coeficiente, 1))
-
-
-# erro_atual = 0;
-
-# a = 0
-# while(a < 10):
-
-#   # erro_atual = J(data)
-#   # print(erro_atual)
-#   gradiente = [ derivada(data, i) for i, f in enumerate(feature) ];
-#   print(gradiente)
-#   coeficiente = [ c - alpha*gradiente[i] for i, c in enumerate(coeficiente) ]
-#   # print(coeficiente)
-
-#   a+=1
-
-
-
-
+for i in range(0, 10):
+  print("")
+  print("Erro ", i, ":", J(coeficiente))
+  print("C: ", coeficiente)
+  
+  # Atualização de coeficientes
+  coeficiente = [ c-alpha*derivada(coeficiente, i) for i,c in enumerate(coeficiente) ]
