@@ -1,8 +1,12 @@
-import random
+from random import random
+from math import exp
 
 feature = [
 	lambda i: 1,
-	lambda i: i[0], #x1
+  lambda i: i[0], #x1
+  lambda i: i[0]**2, #x1
+  lambda i: i[0]**5, #x1
+	lambda i: sin(i[0]), #x1
 ]
 
 # C: lista de coeficientes da hipotese (thetas)
@@ -66,8 +70,8 @@ def derivada(C, i):
   return (1/len(data)) * sum([ (hipotese(C, X) - X[len(X)-1])*feature[i](X) for X in data ]) # onde X[len[X]-1] é o atributo alvo ou y
 
 coeficiente = [
-  83.089,
-  -7.812,
+  random(),
+  random(),
 ]
 
 alpha = 0.1;
