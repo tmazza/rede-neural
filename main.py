@@ -3,10 +3,10 @@ from math import exp, log
 
 feature = [
 	lambda i: 1,
-  lambda i: i[0], #x1
-  lambda i: i[0]**2, #x1
-  lambda i: i[0]**5, #x1
-	lambda i: sin(i[0]), #x1
+  lambda i: i[0], # x1
+  #lambda i: i[0]**2, # x1 ^ 2 
+  #lambda i: i[1]**5, # x2 ^ 5
+	#lambda i: sin(i[0]), # sin(x1)
 ]
 
 # C: lista de coeficientes da hipótese (thetas)
@@ -18,13 +18,13 @@ def hipotese(C, X):
 # Retorna valores normalizados
 def getData():
   data = [
-    [1.17, 78.93],
-    [2.97, 58.20],
-    [3.26, 67.47],
-    [4.69, 37.47],
-    [5.83, 45.65],
-    [6.00, 32.92],
-    [6.41, 29.97],
+    [1.17, 2.17,  78.93],
+    [2.97, 30.97, 58.20],
+    [3.26, 70.26, 67.47],
+    [4.69, 0.69,  37.47],
+    [5.83, 10.83, 45.65],
+    [6.00, 50.00, 32.92],
+    [6.41, 9.41,  29.97],
   ]
 
   # Retorna valores da lista entre 0 e 1
@@ -71,31 +71,32 @@ def derivada(C, i):
   return (1/len(data)) * sum([ (hipotese(C, X) - X[len(X)-1])*feature[i](X) for X in data ]) # onde X[len[X]-1] é o atributo alvo ou y
 
 coeficiente = [
-  random(),
-  random(),
+  [ [ 1, 2 ], [ 3, 4 ] ], # camada 1
+  [ [ 5, 6 ] ],           # camada 2
+]
+
+
+neuronio = [ # valores iniciais quaisquer, serão atribuidos na propagação das entradas
+  [ 0, 0 ], # camada 1
+  [ 0 ],    # camada 2
 ]
 
 alpha = 0.1;
 
-erro_atual = 0;
-while(abs(J(coeficiente) - erro_atual) > 0.00001):
-  
-  erro_atual = J(coeficiente);
+# (teste) usando somente um instância dos dados
+X = data[0]
 
-  print("Erro :", J(coeficiente), "\t\tC: ", coeficiente)
-  
-  # Atualização de coeficientes
-  coeficiente = [ c - alpha*derivada(coeficiente, i) for i,c in enumerate(coeficiente) ]
+C = coeficiente[0][0];
+neuronio[0][0] = hipotese(C, X)
+print("camada 0 - neuronio 0", C)
 
+C = coeficiente[0][1]
+neuronio[0][1] = hipotese(C, X)
+print("camada 0 - neuronio 1", C)
 
-print(hipotese(coeficiente, [0.1]))
-print(hipotese(coeficiente, [0.2]))
-print(hipotese(coeficiente, [0.3]))
-print(hipotese(coeficiente, [0.4]))
-print(hipotese(coeficiente, [0.5]))
-print(hipotese(coeficiente, [0.5]))
-print(hipotese(coeficiente, [0.6]))
-print(hipotese(coeficiente, [0.7]))
-print(hipotese(coeficiente, [0.8]))
-print(hipotese(coeficiente, [0.9]))
-print(hipotese(coeficiente, [0.10]))
+C = coeficiente[1][0];
+neuronio[1][0] = hipotese(C, neuronio[0]);
+
+print(X)
+print(neuronio)
+print(neuronio[ len(neuronio)-1 ][0])
