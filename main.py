@@ -28,7 +28,25 @@ data = getData()
 # Média dos erros ao quadrado
 # C: lista de coeficientes da hipotese (thetas)
 def J(C):
-  return (1/2*len(data)) * sum([ (hipotese(C, X) - X[len(X)-1])**2 for X in data ])
+  return (1/(2*len(data))) * sum([ (hipotese(C, X) - X[len(X)-1])**2 for X in data ])
+
+# Cálculo da derivada em relação a um dos coeficientes (aproximação numérica)
+# C: lista de coeficientes da hipotese (thetas)
+# i: índice do coefiente que derivará J
+def derivada_raw(C, i):
+  epsilon = 0.0000001
+  C1 = list(C)
+  C2 = list(C)
+  C1[i] = C1[i] + epsilon
+  C2[i] = C2[i] - epsilon
+  return (J(C1) - J(C2)) / (2*epsilon)
+
+
+# Cálculo da derivada em relação a um dos coeficientes (usando função de erro)
+# C: lista de coeficientes da hipotese (thetas)
+# i: índice do coefiente que derivará J
+def derivada(C, i):
+  return (1/len(data)) * sum([ (hipotese(C, X) - X[len(X)-1])*feature[i](X) for X in data ]) # onde X[len[X]-1] é o atributo alvo ou y
 
 coeficiente = [
   83.089,
@@ -37,7 +55,10 @@ coeficiente = [
 
 alpha = 0.1;
 
-print(hipotese(coeficiente, [5.83, 78.93]))
+# print(J(coeficiente))
+print(derivada_raw(coeficiente, 1))
+print(derivada(coeficiente, 1))
+
 
 # erro_atual = 0;
 
