@@ -70,25 +70,14 @@ coeficiente = [
   -7.812,
 ]
 
-alpha = 0.01;
+alpha = 0.1;
 
 erro_atual = 0;
-while(abs(J(coeficiente) - erro_atual) > 0.0001):
+while(abs(J(coeficiente) - erro_atual) > 0.001):
   
   erro_atual = J(coeficiente);
 
-  print("\nErro :", J(coeficiente))
-  print("C: ", coeficiente)
+  print("Erro :", J(coeficiente), "\t\tC: ", coeficiente)
   
   # Atualização de coeficientes
   coeficiente = [ c-alpha*derivada(coeficiente, i) for i,c in enumerate(coeficiente) ]
-
-print("\n----------TESTE------------\n")
-
-print(abs(1.0 - hipotese(coeficiente, [0.0, 1.0])))
-print(abs(0.5765931372549019 - hipotese(coeficiente, [0.3435114503816794, 0.5765931372549019])))
-print(abs(0.7659313725490194 - hipotese(coeficiente, [0.39885496183206104, 0.7659313725490194])))
-print(abs(0.1531862745098039 - hipotese(coeficiente, [0.6717557251908397, 0.1531862745098039])))
-print(abs(0.32026143790849665 - hipotese(coeficiente, [0.8893129770992366, 0.32026143790849665])))
-print(abs(0.06025326797385626 - hipotese(coeficiente, [0.9217557251908397, 0.06025326797385626])))
-print(abs(0.0 - hipotese(coeficiente, [1.0, 0.0])))
