@@ -21,9 +21,26 @@ def getData():
     [6.00, 32.92],
     [6.41, 29.97],
   ]
-  return data; #TODO: normalizar
+
+  # Retorna valores da lista entre 0 e 1
+  # list: integer | float
+  def normaliza_entre_0_1(list):
+    min_val = min(list)
+    max_val = max(list)
+    return [ (x-min_val)/(max_val-min_val) for x in list]
+
+  # Normaliza valores enter [0,1] por colunas
+  for i in range(0, len(data[0])): # cada coluna
+    original_column = [ row[i] for row in data ]
+    normalized_column = normaliza_entre_0_1(original_column)
+    for j in range(0, len(data)): # cada linha
+      data[j][i] = normalized_column[j]
+
+  return data; 
 
 data = getData()
+
+print(data)
 
 # Média dos erros ao quadrado
 # C: lista de coeficientes da hipotese (thetas)
@@ -53,12 +70,25 @@ coeficiente = [
   -7.812,
 ]
 
-alpha = 0.4;
+alpha = 0.1;
 
-for i in range(0, 10):
-  print("")
-  print("Erro ", i, ":", J(coeficiente))
+erro_atual = 0;
+while(abs(J(coeficiente) - erro_atual) > 0.0001):
+  
+  erro_atual = J(coeficiente);
+
+  print("\nErro :", J(coeficiente))
   print("C: ", coeficiente)
   
   # Atualização de coeficientes
   coeficiente = [ c-alpha*derivada(coeficiente, i) for i,c in enumerate(coeficiente) ]
+
+print("\n----------TESTE------------\n")
+
+print(abs(1.0 - hipotese(coeficiente, [0.0, 1.0])))
+print(abs(0.5765931372549019 - hipotese(coeficiente, [0.3435114503816794, 0.5765931372549019])))
+print(abs(0.7659313725490194 - hipotese(coeficiente, [0.39885496183206104, 0.7659313725490194])))
+print(abs(0.1531862745098039 - hipotese(coeficiente, [0.6717557251908397, 0.1531862745098039])))
+print(abs(0.32026143790849665 - hipotese(coeficiente, [0.8893129770992366, 0.32026143790849665])))
+print(abs(0.06025326797385626 - hipotese(coeficiente, [0.9217557251908397, 0.06025326797385626])))
+print(abs(0.0 - hipotese(coeficiente, [1.0, 0.0])))
