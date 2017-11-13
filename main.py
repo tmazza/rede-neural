@@ -2,8 +2,8 @@ from random import random
 from math import exp, log
 
 feature = [
-	lambda i: 1,
-  lambda i: i[0], # x1
+	lambda i: i[0], # x1
+  lambda i: i[1], # x2
   #lambda i: i[0]**2, # x1 ^ 2 
   #lambda i: i[1]**5, # x2 ^ 5
 	#lambda i: sin(i[0]), # sin(x1)
@@ -17,14 +17,18 @@ def hipotese(C, X):
 
 # Retorna valores normalizados
 def getData():
-  data = [
-    [1.17, 2.17,  78.93],
-    [2.97, 30.97, 58.20],
-    [3.26, 70.26, 67.47],
-    [4.69, 0.69,  37.47],
-    [5.83, 10.83, 45.65],
-    [6.00, 50.00, 32.92],
-    [6.41, 9.41,  29.97],
+
+  def fn_para_teste(x1, x2):
+    return 3*x1 - 2*x2;
+
+  data = [ 
+    [1.17, 2.17,  fn_para_teste(1.17, 2.17)],
+    [2.97, 30.97, fn_para_teste(2.97, 30.97)],
+    [3.26, 70.26, fn_para_teste(3.26, 70.26)],
+    [4.69, 0.69,  fn_para_teste(4.69, 0.69)],
+    [5.83, 10.83, fn_para_teste(5.83, 10.83)],
+    [6.00, 50.00, fn_para_teste(6.00, 50.00)],
+    [6.41, 9.41,  fn_para_teste(6.41, 9.41)],
   ]
 
   # Retorna valores da lista entre 0 e 1
@@ -71,20 +75,19 @@ def derivada(C, i):
   return (1/len(data)) * sum([ (hipotese(C, X) - X[len(X)-1])*feature[i](X) for X in data ]) # onde X[len[X]-1] é o atributo alvo ou y
 
 coeficiente = [
-  [ [ 1, 2 ], [ 3, 4 ] ], # camada 1
-  [ [ 5, 6 ] ],           # camada 2
+  [ [ random(), random() ], [ random(), random()] ], # camada 1
+  [ [ random(), random() ] ],                        # camada 2
 ]
-
 
 neuronio = [ # valores iniciais quaisquer, serão atribuidos na propagação das entradas
   [ 0, 0 ], # camada 1
   [ 0 ],    # camada 2
 ]
 
-alpha = 0.1;
+X = data[1] # (teste) usando somente um instância dos dados
 
-# (teste) usando somente um instância dos dados
-X = data[0]
+y = X[ len(X)-1 ]
+print("X", X)
 
 C = coeficiente[0][0];
 neuronio[0][0] = hipotese(C, X)
@@ -97,6 +100,10 @@ print("camada 0 - neuronio 1", C)
 C = coeficiente[1][0];
 neuronio[1][0] = hipotese(C, neuronio[0]);
 
-print(X)
+
+f_x = neuronio[ len(neuronio)-1 ][0] # saída último neurônio
+print("f_x", f_x)
+print("erro", abs(f_x - y))
+
 print(neuronio)
 print(neuronio[ len(neuronio)-1 ][0])
