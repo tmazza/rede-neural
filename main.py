@@ -70,7 +70,7 @@ coeficiente = [
   -7.812,
 ]
 
-alpha = 0.1;
+alpha = 0.01;
 
 erro_atual = 0;
 while(abs(J(coeficiente) - erro_atual) > 0.0001):
